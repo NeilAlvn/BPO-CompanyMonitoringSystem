@@ -13,9 +13,9 @@ import os
 import tempfile
 
 # ✅ Server URLs
-API_URL = "http://192.168.0.34:8000/log_activity"
-SCREENSHOT_URL = "http://192.168.0.34:8000/upload_screenshot"
-WS_URL = "ws://192.168.0.34:8000/ws"
+API_URL = "http://172.16.1.5:8000/log_activity"
+SCREENSHOT_URL = "http://1172.16.1.5:8000/upload_screenshot"
+WS_URL = "ws://172.16.1.5:8000/ws"
 
 # ✅ Constants
 IDLE_THRESHOLD = 30  # seconds

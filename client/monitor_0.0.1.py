@@ -16,10 +16,10 @@ import base64
 import threading
 
 # ✅ Server URLs
-API_URL = "https://192.168.0.34:8000/log_activity/"
-SCREENSHOT_URL = "https://192.168.0.34:8000/upload_screenshot"
-WS_URL = "wss://192.168.0.34:8000/ws"
-WEBRTC_WS_URL = "wss://192.168.0.34:8000/webrtc"
+API_URL = "http://172.16.1.5:8000/log_activity/"
+SCREENSHOT_URL = "http://172.16.1.5:8000/upload_screenshot"
+WS_URL = "ws://172.16.1.5:8000/ws"
+WEBRTC_WS_URL = "ws://172.16.1.5:8000/webrtc"
 
 # ✅ Constants
 IDLE_THRESHOLD = 30  # seconds

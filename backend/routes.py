@@ -1,11 +1,13 @@
 import os
 from fastapi import APIRouter, BackgroundTasks, Query, HTTPException, File, UploadFile, Form
+from fastapi.responses import JSONResponse
 from typing import Optional
 from datetime import datetime
 
 from models import LogRequest, ActivityLog, LogResponse, ScreenshotResponse
 from database import insert_logs, fetch_logs
 from websocket_manager import notify_clients, notify_specific_pc
+from analysis import analyze_pc_activity, analyze_window_usage_per_day
 
 router = APIRouter()
 
@@ -69,10 +71,23 @@ async def upload_screenshot(pc_id: str = Form(...), screenshot: UploadFile = Fil
             buffer.write(await screenshot.read())
 
         # Full URL to access the screenshot
-        screenshot_url = f"http://localhost/Monitoring%20System/backend/screenshots/{pc_id}/{filename}"
+        screenshot_url = f"http://localhost/new/Client-Server-Monitoring-System/backend/screenshots/{pc_id}/{filename}"
         print(f"📸 Screenshot saved: {screenshot_url}")
 
         return {"message": "Screenshot uploaded", "screenshot_url": screenshot_url}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+    
+
+@router.get("/api/activity-report/{pc_id}")
+def get_activity_report(pc_id: str):
+    logs = fetch_logs(pc_id=pc_id)
+    result = analyze_pc_activity(logs)
+    return JSONResponse(content=result)
+
+@router.get("/api/window-usage/{pc_id}")
+def get_window_usage(pc_id: str):
+    logs = fetch_logs(pc_id=pc_id)
+    usage_report = analyze_window_usage_per_day(logs)
+    return JSONResponse(content=usage_report)

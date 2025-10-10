@@ -32,12 +32,18 @@ app.include_router(webrtc_router)
 # Add CORS middleware to allow your frontend to communicate with FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost", "https://192.168.0.34"],  # List of allowed origins
+    allow_origins=[
+        "http://localhost",
+        "http://localhost:8000",
+        "http://127.0.0.1:5500",
+        "http://172.16.1.5",  # <- if you're using VS Code Live Server
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods like GET, POST, etc.
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 if __name__ == "__main__":
@@ -46,6 +52,6 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",  # Listen on all interfaces
         port=8000,
-        ssl_keyfile=r"C:\xampp\htdocs\Monitoring System\backend\msi.pem",
-        ssl_certfile=r"C:\xampp\htdocs\Monitoring System\backend\cert.crt"
+        #ssl_keyfile=r"C:\xampp\htdocs\Monitoring System\backend\msi.pem",
+        #ssl_certfile=r"C:\xampp\htdocs\Monitoring System\backend\cert.crt"
     )

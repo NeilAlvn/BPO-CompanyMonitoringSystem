@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="Win: Nmsi" Language="1033" Version="1.0.0" Manufacturer="Windows_N" UpgradeCode="a417b342-8b37-47ba-b1e2-b17285511559">
+        <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+        <MediaTemplate EmbedCab="yes"/>
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLFOLDER" Name="Win">
+                    <Component Id="MainExecutable" Guid="b5f19138-e1c3-440a-9293-8b51185859a2">
+                        <File Id="Win.exe" Name="Win.exe" Source="dist\test_pc.exe" KeyPath="yes"/>
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="StartupFolder">
+                <Component Id="AutostartShortcut" Guid="e0c930a6-5915-4689-b145-129759cd10a7">
+                    <RegistryValue Root="HKCU"
+                                Key="Software\Microsoft\Windows\CurrentVersion\Run"
+                                Name="run"
+                                Value='C:\Windows\System32\cmd.exe /c start "" /high /b "C:\Program Files (x86)\Win\Win.exe"'
+                                Type="string" Action="write"/>
+                    <RemoveFolder Id="RemoveAutostartShortcut" Directory="StartupFolder" On="uninstall"/>
+                </Component>
+            </Directory>
+        </Directory>
+
+        <Feature Id="DefaultFeature" Title="Win: Nmsi" Level="1">
+            <ComponentRef Id="MainExecutable"/>
+            <ComponentRef Id="AutostartShortcut"/>
+        </Feature>
+
+        <Icon Id="ServiceHostIcon" SourceFile="service_host.ico"/>
+        <Property Id="ARPPRODUCTICON" Value="ServiceHostIcon" />
+
+    </Product>
+</Wix>

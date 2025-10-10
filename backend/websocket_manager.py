@@ -1,6 +1,7 @@
 import json
 import os
 import asyncio
+import sys
 from fastapi import APIRouter, WebSocket
 from typing import List
 
@@ -49,6 +50,8 @@ async def notify_clients(logs):
 
     # Send JSON data to all clients
     message = json.dumps({"logs": logs_dict})
+    if sys.platform == 'win32':
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     await asyncio.gather(*(client.send_text(message) for client in connected_clients))
 
 async def notify_specific_pc(pc_id: str):
